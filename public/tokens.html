@@ -1,0 +1,88 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INL IBRO</title>
+    <link rel="stylesheet" href="./styles/tokens.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+    <div class="top">
+        <div class="stats">
+            <div class="head">
+                Live Price:
+            </div>
+            <div class="left-col">
+                <div id="users"></div>
+                <div class="subtext">Users</div>
+            </div>
+            <div class="right-col">
+                <div id="tokens"></div>
+                <div class="subtext">INL</div>
+            </div>
+        </div>
+        <div hidden id="getmore">
+            <p class="caution-up">Get some INL from</p>
+            <a target="_blank"
+                href="https://xumm.app/detect/xapp:xumm.dex?issuer=rsARtxd6M1RBoGKwoGh4ujCQ9A6iDYEu4s&currency=INL"
+                class="igor">
+                XUMM DEX
+            </a>
+            <a target="_blank"
+                href="https://sologenic.org/trade?network=mainnet&market=INL%2BrsARtxd6M1RBoGKwoGh4ujCQ9A6iDYEu4s%2FXRP"
+                class="igor">
+                Sologenic DEX
+            </a>
+        </div>
+        <div class="caution">
+            <div class="caution-up">Tap down to claim your</div>
+            <div class="caution-down">0.1 INL</div>
+        </div>
+        <div hidden class="spin"></div>
+        <!-- <button onclick="getTokens()" class="main-btn"> -->
+
+        <img class="main-btn" onclick="getTokens()" width="250" height="250" src="./assets/icon.png" alt="">
+        <!-- </button> -->
+
+    </div>
+    <script>
+        window.onload = async () => {
+            let data = await fetch("https://data.ripple.com/v2/exchange_rates/INL+rsARtxd6M1RBoGKwoGh4ujCQ9A6iDYEu4s/XRP").then(res => res.json())
+            //document.querySelector("#users").innerHTML = data.users
+            document.querySelector("#tokens").innerHTML = Number(data.rate).toFixed(1) + " INL/XRP"
+        }
+        async function getTokens() {
+            document.querySelector(".spin").hidden = false;
+            let data = await fetch("/getTokens").then(res => res.json())
+            if ("error" in data) {
+                if (data.error.includes("thank you for your support")) swal({
+                    text: data.error,
+                    icon: "success",
+                })
+                else swal({
+                    text: data.error,
+                    icon: "error",
+                });
+                if (data.error.includes("This account must hold atleast 1")) {
+                    document.querySelector("#getmore").hidden = false;
+                }
+                document.querySelector(".spin").hidden = true;
+            }
+            else if ("send" in data) {
+                swal({
+                    text: "You successfully claimed your Tokens!",
+                    icon: "success",
+                })
+                setTimeout(() => {
+                    window.location.href = window.location.origin + "/success"
+                }, 1000)
+            }
+            else window.location.href = window.location.origin + "/wait"
+        }
+    </script>
+</body>
+
+</html>

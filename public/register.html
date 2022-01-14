@@ -1,0 +1,84 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INL IBRO</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <style>
+        .main-btn {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top">
+        <div class="stats">
+            <div class="head">
+                Live Price:
+            </div>
+            <div class="left-col">
+                <div id="users"></div>
+                <div class="subtext">Users</div>
+            </div>
+            <div class="right-col">
+                <div id="tokens"></div>
+                <div class="subtext">INL</div>
+            </div>
+        </div>
+        <!-- <button disabled class="main-btn"> -->
+            <img class="main-btn" width="170" height="170" src="./assets/icon.png" alt="">
+        <!-- </button> -->
+        <div class="caution">
+            You need register first to claim your INL Tokens.
+        </div>
+        <p class="desc">
+            Trust Lines are required (per token, per issuer) to be able to hold a balance of a specific token, as per
+            XRP Ledger design. Trust Lines do not impose a security risk. You can set up the INL Trust Line with the
+            button below:
+        </p>
+        <div hidden class="spin"></div>
+        <button class="signup" onclick="gonext()">
+            <div class="top-sign">Open Sign request</div>
+            <div class="lower-sign">TrustSet</div>
+        </button>
+    </div>
+    <script>
+        let url = ""
+        let opened = false
+        async function getData() {
+            let web = await fetch("/uuid").then(res => res.json())
+            let { refs, next } = web
+            url = next.always
+            let socket = new WebSocket(refs.websocket_status)
+            socket.onmessage = (e) => {
+                let data = JSON.parse(e.data)
+                //if (data.signed) window.location.href = window.location.origin + "/registered"
+                if (data.signed) window.location.href = window.location.origin + "/tokens"
+            }
+        }
+        window.onload = async () => {
+            let data = await fetch("https://data.ripple.com/v2/exchange_rates/INL+rsARtxd6M1RBoGKwoGh4ujCQ9A6iDYEu4s/XRP").then(res => res.json())
+            //document.querySelector("#users").innerHTML = data.users
+            document.querySelector("#tokens").innerHTML = Number(data.rate).toFixed(1) + " INL/XRP"
+            getData()
+        }
+        //window.onload = getData
+        async function gonext() {
+            document.querySelector(".spin").hidden = false
+            if (!opened) {
+                window.open(url, "_blank")
+                opened = true
+            }
+            else {
+                await getData()
+                window.open(url, '_blank');
+            }
+            document.querySelector(".spin").hidden = true
+        }
+    </script>
+</body>
+
+</html>

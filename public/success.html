@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/success.css">
+</head>
+
+<body>
+    <div class="top">
+        <div class="stats">
+            <div class="head">
+                Live Price:
+            </div>
+            <div class="left-col">
+                <div id="users"></div>
+                <div class="subtext">Users</div>
+            </div>
+            <div class="right-col">
+                <div id="tokens"></div>
+                <div class="subtext">INL</div>
+            </div>
+        </div>
+        <div class="awesome">
+            <div class="row">
+                <img src="./assets/party.png" width="50" height="50" alt="">
+                <span>Awesome!</span>
+            </div>
+            <div class="row-2">
+                0.1 INL claimed!
+            </div>
+        </div>
+        <div class="desc">
+            As we only process <span class="bolder">a limited amount of payouts per closed ledger</span>, there is a
+            <span class="bolder">queue</span> at the moment. It will
+            take <span class="bolder underline">approximately 24 minutes</span> for your <span class="bolder">0.1
+                INL</span> to arrive in your account.
+        </div>
+        <p class="see">See you again tomorrow?</p>
+        <a href="/wait" class="btn">
+            <img src="./assets/bye.png" width="40" height="40" alt="">
+        </a>
+    </div>
+    <script>
+        window.onload = async () => {
+            let data = await fetch("https://data.ripple.com/v2/exchange_rates/INL+rsARtxd6M1RBoGKwoGh4ujCQ9A6iDYEu4s/XRP").then(res => res.json())
+            //document.querySelector("#users").innerHTML = data.users
+            document.querySelector("#tokens").innerHTML = Number(data.rate).toFixed(1) + " INL/XRP"
+        }
+    </script>
+</body>
+
+</html>

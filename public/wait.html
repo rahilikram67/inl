@@ -1,0 +1,40 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/wait.css">
+</head>
+
+<body>
+    <div class="top">
+        <div class="stats">
+            <div class="head">
+                Live Price:
+            </div>
+            <div class="left-col">
+                <div id="users"></div>
+                <div class="subtext">Users</div>
+            </div>
+            <div class="right-col">
+                <div id="tokens"></div>
+                <div class="subtext">INL</div>
+            </div>
+        </div>
+
+        <img class="main-btn" width="170" height="170" src="./assets/icon.png" alt="">
+
+        <div class="desc">
+            You already claimed your INL in last 24 hours.
+        </div>
+        <p class="text">
+            Please come back later, you can claim again exactly 24 hours after your last claim.
+        </p>
+        <div id="MyClockDisplay" class="clock" onload="showTime(6500)"></div>
+        <script src="./js/code.js"></script>
+    </div>
+</body>
+
+</html>

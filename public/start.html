@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+    <div class="spin"></div>
+    <script>
+        window.onload = async () => {
+            let query = new URLSearchParams(window.location.search);
+            let res = await fetch("/init/" + query.get("xAppToken")).then(res => res.json())
+            if (res.registered) {
+                let status = await fetch("/status").then(res => res.json())
+                if (res.account in status) {
+                    window.location.href = window.location.origin + "/wait"
+                }
+                else window.location.href = window.location.origin + "/tokens"
+
+            }
+            else window.location.href = window.location.origin + "/register"
+        }
+    </script>
+</body>
+
+</html>
